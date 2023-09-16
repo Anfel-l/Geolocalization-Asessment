@@ -9,21 +9,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Quemado en código xd
     var cities = [
-
         { nombre: "Roma", latitud: 41.9028, longitud: 12.4964, demora: 40},
         { nombre: "Pekín", latitud: 39.9042, longitud: 116.4074, demora: 10},
-        { nombre: "Nueva York", latitud: 40.7128, longitud: -74.0060, demora: 20},
         { nombre: "Londres", latitud: 51.5074, longitud: -0.1278, demora: 30},
         { nombre: "Medellín", latitud: 6.2442, longitud: -75.5812, demora: 90},
         { nombre: "Dublín", latitud: 53.349805, longitud: -6.26031, demora: 40},
         { nombre: "Barcelona", latitud: 41.3851, longitud: 2.1734, demora: 130},
-        { nombre: "Bogotá", latitud: 4.6097, longitud: -74.0817, demora:60},
-        { nombre: "Ottawa", latitud: 45.4215, longitud: -75.6991, demora: 100},
-        { nombre: "Sídney", latitud: -33.8688, longitud: 151.2093, demora: 10 }
-        
+        { nombre: "Nueva York", latitud: 40.7128, longitud: -74.0060, demora: 20},
+        { nombre: "Bogotá", latitud: 4.6097, longitud: -74.0817, demora: 60},
+        { nombre: "Sídney", latitud: -33.8688, longitud: 151.2093, demora: 10 },
+        { nombre: "Tokio", latitud: 35.6762, longitud: 139.6503, demora: 20 },
     ];
-    
-    
 
     function calcularDistancia(ciudadA, ciudadB) {
         var R = 6371; // Radio de la Tierra en kilómetros
@@ -90,14 +86,20 @@ document.addEventListener('DOMContentLoaded', function() {
 
         var distances = dijkstra(graph, cities[0].nombre);
 
-        // Convertir las distancias a una lista ordenada de ciudades
         var sortedCities = Object.keys(distances).sort(function(a, b) {
             return distances[a] - distances[b];
         });
 
+        var cityOrder = sortedCities.map(function(nombreCiudad) {
+            return cities.find(function(ciudad) {
+                return ciudad.nombre === nombreCiudad;
+            });
+        });
+
         return {
             ruta: sortedCities,
-            distancia: distances[sortedCities[sortedCities.length - 1]]
+            distancia: distances[sortedCities[sortedCities.length - 1]],
+            cityOrder: cityOrder // Nuevo arreglo con el orden de las ciudades
         };
     }
 
@@ -149,7 +151,7 @@ document.addEventListener('DOMContentLoaded', function() {
         for (var i = 0; i < cities.length; i++) {
             var ciudad = cities[i];
             var listItem = document.createElement('li');
-            listItem.textContent = ciudad;
+            listItem.textContent = ciudad.nombre; // Mostrar el nombre de la ciudad
             citiesList.appendChild(listItem);
         }
     }
@@ -163,8 +165,8 @@ document.addEventListener('DOMContentLoaded', function() {
     var resultado = calcularDistancias(cities);
 
     // Mostrar en el mapa y en el DOM
-    displayCitiesOnMap(cities);
-    updateCitiesList(resultado.ruta);
+    updateCitiesList(resultado.cityOrder); // Mostrar en el DOM en el orden de la ruta
+    displayCitiesOnMap(resultado.cityOrder); // Mostrar en el mapa en el orden de la ruta
     updateTotalDistance(resultado.distancia);
 
     // Mostrar la información
