@@ -1,11 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Agente Viajero TSP</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <link rel="stylesheet" href="CSS/styles.css">
 </head>
 <body>
-    
+    <div id="map-container">
+        <div id="map"></div>
+    </div>
+    <div id="info" style="display:none;">
+        <h2>Ruta Óptima</h2>
+        <ul id="cities-list"></ul>
+        <p id="total-distance"></p>
+    </div>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="JS/script.js"></script>
 </body>
 </html>
